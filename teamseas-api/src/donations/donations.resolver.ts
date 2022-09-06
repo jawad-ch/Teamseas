@@ -1,25 +1,30 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
+import { OrderByParams } from '../graphql';
 import { DonationsService } from './donations.service';
-import { CreateDonationInput } from './dto/create-donation.input';
-import { UpdateDonationInput } from './dto/update-donation.input';
 
 @Resolver('Donation')
 export class DonationsResolver {
   constructor(private readonly donationsService: DonationsService) {}
 
   @Mutation('createDonation')
-  create(@Args('createDonationInput') createDonationInput: CreateDonationInput) {
+  create(
+    @Args('createDonationInput')
+    createDonationInput: Prisma.DonationCreateInput,
+  ) {
     return this.donationsService.create(createDonationInput);
   }
 
   @Query('donations')
-  findAll() {
-    return this.donationsService.findAll();
+  findAll(
+    @Args('orderBy')
+    orderBy?: OrderByParams,
+  ) {
+    return this.donationsService.findAll(orderBy);
   }
 
   @Query('donation')
   findOne(@Args('id') id: number) {
-    return this.donationsService.findOne(id);
+    return this.donationsService.findOne({ id });
   }
-
 }
