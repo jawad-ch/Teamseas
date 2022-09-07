@@ -18,6 +18,10 @@ import { GraphQLDateTime } from 'graphql-iso-date';
         resolvers: {
           DateTime: GraphQLDateTime,
         },
+        subscriptions: {
+          'subscriptions-transport-ws': true,
+          'graphql-ws': true,
+        },
       }),
       // typePaths: ['./**/*.graphql'],
     }),
